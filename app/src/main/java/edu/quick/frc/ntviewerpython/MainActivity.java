@@ -1,6 +1,7 @@
 package edu.quick.frc.ntviewerpython;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if(id == R.id.menu_setting){
             // Open Setting Page
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -48,12 +51,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         nt = new nt_utils(this);
         pwd = new nt_utils.Pwd(this, nt);
-        /*
-        TextView t = findViewById(R.id.Text);
-        Button b = findViewById(R.id.button);
-        b.setOnClickListener(v -> {
-            t.setText(nt.getTables());
-        });*/
 
         rv = findViewById(R.id.RecyclerView);
         data = new ArrayList<>();
