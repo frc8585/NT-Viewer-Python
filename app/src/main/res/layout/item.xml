@@ -53,7 +53,7 @@
                 android:layout_weight="1"
                 android:gravity="end|top"
                 android:text="Type"
-                android:textColor="#9C9C9C"
+                android:textColor="#757575"
                 android:textSize="14sp"
                 tools:ignore="HardcodedText" />
 
