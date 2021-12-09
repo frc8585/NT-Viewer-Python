@@ -1,5 +1,6 @@
 package edu.quick.frc.ntviewerpython;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -62,11 +63,13 @@ public class MainActivity extends AppCompatActivity {
         updateData();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     void updateData(){
+        data.clear();
+
         //data.add(new Item("SmartDashboard", "", "SubTable"));
         //data.add(new Item("Entry 1", "123.45", "Number"));
         //data.add(new Item("Entry 2", "Hello There!", "String"));
-        data.clear();
 
         if(!pwd.isRoot())
             data.add(new Item("<= Return", "", pwd.getFullPath()));
