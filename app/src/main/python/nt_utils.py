@@ -1,6 +1,7 @@
 from networktables import NetworkTables as NT
 import settings
 import logging
+import time
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -55,9 +56,14 @@ def getType(entry):
     return types[entry.getType()]
 
 handler = None
+last_time = time.time()
+timeout = 0.2
 
 # Note: key is full path
 def callback(key, value, isNew): # (str, Any, bool)
-    return handler.sendEmptyMessage(0)
+    global last_time
+    if (time.time() - last_time) > timeout:
+        handler.sendEmptyMessage(0)
+        last_time = time.time()
 
 NT.addEntryListener(callback)
