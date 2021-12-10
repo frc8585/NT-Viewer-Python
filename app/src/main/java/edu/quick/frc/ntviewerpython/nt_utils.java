@@ -57,6 +57,10 @@ public class nt_utils {
         return new Entry(module.callAttr("getEntry", table, key), key);
     }
 
+    void reconnect(String ip){
+        module.callAttr("startNewInstance", ip);
+    }
+
     class Entry{
         private final PyObject entry;
         public final String key;

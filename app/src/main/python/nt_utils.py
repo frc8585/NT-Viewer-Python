@@ -1,25 +1,15 @@
 from networktables import NetworkTables as NT
-import settings
 import logging
-import time
 
 logging.basicConfig(level=logging.DEBUG)
-
-#from os.path import dirname, join
-#filename = join(dirname(__file__), "filename.txt")
 
 #https://robotpy.readthedocs.io/projects/pynetworktables/en/stable/examples.html
 #https://chaquo.com/chaquopy/doc/current/android.html
 
-#def valueChanged(key, value, isNew):
-#    print("valueChanged: key: '%s'; value: %s; isNew: %s" % (key, value, isNew))
-#NT.addEntryListener(valueChanged)
-
 # ======================================================================================
 
-ip = settings.ip
-
-NT.initialize(server=ip)
+nt = None
+handler = None
 
 types = {
     NT.EntryTypes.BOOLEAN       : "Boolean",
@@ -32,10 +22,10 @@ types = {
 }
 
 def getNT(): # Big Table including all the tables
-    return NT.getGlobalTable()
+    return nt.getGlobalTable()
 
 def getTable(key):
-    return NT.getTable(key)
+    return nt.getTable(key)
 
 def getSubTables(table):
     return table.getSubTables()
@@ -55,15 +45,17 @@ def getValueString(entry):
 def getType(entry):
     return types[entry.getType()]
 
-handler = None
-last_time = time.time()
-timeout = 0.2
-
 # Note: key is full path
 def callback(key, value, isNew): # (str, Any, bool)
-    global last_time
-    if (time.time() - last_time) > timeout:
-        handler.sendEmptyMessage(0)
-        last_time = time.time()
+    handler.sendEmptyMessage(0)
 
-NT.addEntryListener(callback)
+def startNewInstance(ip):
+    global nt
+    if nt:
+        nt.shutdown()
+    nt = NT.create()
+    nt.startClient(ip)
+    nt.addEntryListener(callback)
+
+NT.setUpdateRate(0.3) # 0.3s per update
+startNewInstance("192.168.0.98")
